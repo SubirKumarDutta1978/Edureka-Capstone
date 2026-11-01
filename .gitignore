@@ -1,0 +1,9 @@
+.vs/
+bin/
+obj/
+*.user
+*.suo
+Data/Uploads/*
+!Data/Uploads/.gitkeep
+Data/VectorStore/
+appsettings.Development.json
