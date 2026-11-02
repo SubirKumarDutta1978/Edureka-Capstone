@@ -319,16 +319,17 @@ namespace Edureka.Capstone.Forms
             // 
             // flpSendButtons
             // 
-            flpSendButtons.AutoSize = true;
-            flpSendButtons.Controls.Add(btnSend);
+            flpSendButtons.AutoSize = false;
             flpSendButtons.Controls.Add(btnClearChat);
+            flpSendButtons.Controls.Add(btnSend);
             flpSendButtons.Dock = DockStyle.Right;
-            flpSendButtons.FlowDirection = FlowDirection.RightToLeft;
+            flpSendButtons.FlowDirection = FlowDirection.LeftToRight;
             flpSendButtons.Location = new Point(460, 0);
             flpSendButtons.Name = "flpSendButtons";
             flpSendButtons.Padding = new Padding(0, 4, 0, 0);
             flpSendButtons.Size = new Size(240, 42);
             flpSendButtons.TabIndex = 1;
+            flpSendButtons.WrapContents = false;
             // 
             // btnSend
             // 
