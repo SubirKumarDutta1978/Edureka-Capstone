@@ -9,6 +9,7 @@ public class AppSettings
 
     public string ApplicationName { get; set; } = "Edureka Capstone";
     public string UploadFolder { get; set; } = "Data\\Uploads";
+    public int MaxFileSizeMb { get; set; } = 50;
     public string[] SupportedExtensions { get; set; } = [".pdf", ".txt", ".csv", ".xlsx", ".xls"];
 
     public LlmSettings Llm { get; set; } = new();
