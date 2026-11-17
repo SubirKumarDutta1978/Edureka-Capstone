@@ -1,8 +1,15 @@
 namespace Edureka.Capstone.Models;
 
+public enum DocumentStatus
+{
+    Queued,
+    Processing,
+    Ready,
+    Failed
+}
+
 /// <summary>
-/// A document the user has selected for questioning.
-/// Step 2 only keeps a reference to the file; ingestion comes in a later step.
+/// A document the user has selected, plus the result of ingesting it.
 /// </summary>
 public sealed class DocumentItem
 {
@@ -12,6 +19,12 @@ public sealed class DocumentItem
     public string Extension { get; }
     public long SizeBytes { get; }
     public DateTime AddedAt { get; } = DateTime.Now;
+
+    // ---- filled in by the ingestion service (Step 3)
+    public DocumentStatus Status { get; set; } = DocumentStatus.Queued;
+    public string StatusMessage { get; set; } = "Queued";
+    public string? StoredPath { get; set; }
+    public DocumentContent? Content { get; set; }
 
     private DocumentItem(string filePath, string fileName, string extension, long sizeBytes)
     {
@@ -34,6 +47,15 @@ public sealed class DocumentItem
     };
 
     public string SizeLabel => FormatSize(SizeBytes);
+
+    public string StatusLabel => Status switch
+    {
+        DocumentStatus.Queued => "Queued",
+        DocumentStatus.Processing => "Processing...",
+        DocumentStatus.Ready => $"Ready ({Content?.Summary})",
+        DocumentStatus.Failed => "Failed",
+        _ => string.Empty
+    };
 
     public static string FormatSize(long bytes)
     {

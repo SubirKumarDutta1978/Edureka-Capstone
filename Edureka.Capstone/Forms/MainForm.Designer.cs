@@ -28,9 +28,11 @@ namespace Edureka.Capstone.Forms
             colName = new ColumnHeader();
             colType = new ColumnHeader();
             colSize = new ColumnHeader();
+            colStatus = new ColumnHeader();
             lblDropHint = new Label();
             flpDocButtons = new FlowLayoutPanel();
             btnAddFiles = new Button();
+            btnPreview = new Button();
             btnRemoveFile = new Button();
             btnClearFiles = new Button();
             grpConversation = new GroupBox();
@@ -39,11 +41,10 @@ namespace Edureka.Capstone.Forms
             txtPrompt = new Edureka.Capstone.Forms.Controls.PromptRichTextBox();
             flpAttachments = new FlowLayoutPanel();
             lblPromptCaption = new Label();
-            pnlInputButtons = new Panel();
+            tlpSend = new TableLayoutPanel();
             lblHint = new Label();
-            flpSendButtons = new FlowLayoutPanel();
-            btnSend = new Button();
             btnClearChat = new Button();
+            btnSend = new Button();
             pnlHeader.SuspendLayout();
             statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitMain).BeginInit();
@@ -54,8 +55,7 @@ namespace Edureka.Capstone.Forms
             flpDocButtons.SuspendLayout();
             grpConversation.SuspendLayout();
             pnlInput.SuspendLayout();
-            pnlInputButtons.SuspendLayout();
-            flpSendButtons.SuspendLayout();
+            tlpSend.SuspendLayout();
             SuspendLayout();
             // 
             // pnlHeader
@@ -65,7 +65,7 @@ namespace Edureka.Capstone.Forms
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1100, 60);
+            pnlHeader.Size = new Size(1200, 60);
             pnlHeader.TabIndex = 0;
             // 
             // lblTitle
@@ -76,7 +76,7 @@ namespace Edureka.Capstone.Forms
             lblTitle.Location = new Point(0, 0);
             lblTitle.Name = "lblTitle";
             lblTitle.Padding = new Padding(15, 0, 0, 0);
-            lblTitle.Size = new Size(1100, 60);
+            lblTitle.Size = new Size(1200, 60);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Edureka Capstone";
             lblTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -86,7 +86,7 @@ namespace Edureka.Capstone.Forms
             statusStrip.Items.AddRange(new ToolStripItem[] { lblStatus, lblDocSummary });
             statusStrip.Location = new Point(0, 698);
             statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(1100, 22);
+            statusStrip.Size = new Size(1200, 22);
             statusStrip.TabIndex = 2;
             // 
             // lblStatus
@@ -110,12 +110,12 @@ namespace Edureka.Capstone.Forms
             splitMain.Name = "splitMain";
             splitMain.Panel1.Controls.Add(grpDocuments);
             splitMain.Panel1.Padding = new Padding(10, 10, 5, 10);
-            splitMain.Panel1MinSize = 300;
+            splitMain.Panel1MinSize = 380;
             splitMain.Panel2.Controls.Add(grpConversation);
             splitMain.Panel2.Padding = new Padding(5, 10, 10, 10);
             splitMain.Panel2MinSize = 450;
-            splitMain.Size = new Size(1100, 638);
-            splitMain.SplitterDistance = 360;
+            splitMain.Size = new Size(1200, 638);
+            splitMain.SplitterDistance = 450;
             splitMain.TabIndex = 1;
             // 
             // grpDocuments
@@ -128,7 +128,7 @@ namespace Edureka.Capstone.Forms
             grpDocuments.Location = new Point(10, 10);
             grpDocuments.Name = "grpDocuments";
             grpDocuments.Padding = new Padding(8);
-            grpDocuments.Size = new Size(345, 618);
+            grpDocuments.Size = new Size(435, 618);
             grpDocuments.TabIndex = 0;
             grpDocuments.TabStop = false;
             grpDocuments.Text = "Documents";
@@ -138,17 +138,18 @@ namespace Edureka.Capstone.Forms
             // lvDocuments
             // 
             lvDocuments.AllowDrop = true;
-            lvDocuments.Columns.AddRange(new ColumnHeader[] { colName, colType, colSize });
+            lvDocuments.Columns.AddRange(new ColumnHeader[] { colName, colType, colSize, colStatus });
             lvDocuments.Dock = DockStyle.Fill;
             lvDocuments.FullRowSelect = true;
             lvDocuments.HideSelection = false;
             lvDocuments.Location = new Point(8, 66);
             lvDocuments.Name = "lvDocuments";
             lvDocuments.ShowItemToolTips = true;
-            lvDocuments.Size = new Size(329, 506);
+            lvDocuments.Size = new Size(419, 506);
             lvDocuments.TabIndex = 1;
             lvDocuments.UseCompatibleStateImageBehavior = false;
             lvDocuments.View = View.Details;
+            lvDocuments.DoubleClick += lvDocuments_DoubleClick;
             lvDocuments.DragDrop += Documents_DragDrop;
             lvDocuments.DragEnter += Documents_DragEnter;
             lvDocuments.SelectedIndexChanged += lvDocuments_SelectedIndexChanged;
@@ -157,17 +158,22 @@ namespace Edureka.Capstone.Forms
             // colName
             // 
             colName.Text = "Name";
-            colName.Width = 180;
+            colName.Width = 140;
             // 
             // colType
             // 
             colType.Text = "Type";
-            colType.Width = 60;
+            colType.Width = 50;
             // 
             // colSize
             // 
             colSize.Text = "Size";
-            colSize.Width = 80;
+            colSize.Width = 65;
+            // 
+            // colStatus
+            // 
+            colStatus.Text = "Status";
+            colStatus.Width = 150;
             // 
             // lblDropHint
             // 
@@ -176,38 +182,50 @@ namespace Edureka.Capstone.Forms
             lblDropHint.Location = new Point(8, 572);
             lblDropHint.Name = "lblDropHint";
             lblDropHint.Padding = new Padding(0, 6, 0, 0);
-            lblDropHint.Size = new Size(329, 38);
+            lblDropHint.Size = new Size(419, 38);
             lblDropHint.TabIndex = 2;
             lblDropHint.Text = "Drag and drop files here";
             // 
             // flpDocButtons
             // 
             flpDocButtons.Controls.Add(btnAddFiles);
+            flpDocButtons.Controls.Add(btnPreview);
             flpDocButtons.Controls.Add(btnRemoveFile);
             flpDocButtons.Controls.Add(btnClearFiles);
             flpDocButtons.Dock = DockStyle.Top;
             flpDocButtons.Location = new Point(8, 24);
             flpDocButtons.Name = "flpDocButtons";
-            flpDocButtons.Size = new Size(329, 42);
+            flpDocButtons.Size = new Size(419, 42);
             flpDocButtons.TabIndex = 0;
             // 
             // btnAddFiles
             // 
             btnAddFiles.Location = new Point(3, 3);
             btnAddFiles.Name = "btnAddFiles";
-            btnAddFiles.Size = new Size(105, 32);
+            btnAddFiles.Size = new Size(100, 32);
             btnAddFiles.TabIndex = 0;
             btnAddFiles.Text = "Add files...";
             btnAddFiles.UseVisualStyleBackColor = true;
             btnAddFiles.Click += btnAddFiles_Click;
             // 
+            // btnPreview
+            // 
+            btnPreview.Enabled = false;
+            btnPreview.Location = new Point(109, 3);
+            btnPreview.Name = "btnPreview";
+            btnPreview.Size = new Size(80, 32);
+            btnPreview.TabIndex = 1;
+            btnPreview.Text = "Preview";
+            btnPreview.UseVisualStyleBackColor = true;
+            btnPreview.Click += btnPreview_Click;
+            // 
             // btnRemoveFile
             // 
             btnRemoveFile.Enabled = false;
-            btnRemoveFile.Location = new Point(114, 3);
+            btnRemoveFile.Location = new Point(195, 3);
             btnRemoveFile.Name = "btnRemoveFile";
-            btnRemoveFile.Size = new Size(95, 32);
-            btnRemoveFile.TabIndex = 1;
+            btnRemoveFile.Size = new Size(80, 32);
+            btnRemoveFile.TabIndex = 2;
             btnRemoveFile.Text = "Remove";
             btnRemoveFile.UseVisualStyleBackColor = true;
             btnRemoveFile.Click += btnRemoveFile_Click;
@@ -215,10 +233,10 @@ namespace Edureka.Capstone.Forms
             // btnClearFiles
             // 
             btnClearFiles.Enabled = false;
-            btnClearFiles.Location = new Point(215, 3);
+            btnClearFiles.Location = new Point(281, 3);
             btnClearFiles.Name = "btnClearFiles";
-            btnClearFiles.Size = new Size(95, 32);
-            btnClearFiles.TabIndex = 2;
+            btnClearFiles.Size = new Size(80, 32);
+            btnClearFiles.TabIndex = 3;
             btnClearFiles.Text = "Clear all";
             btnClearFiles.UseVisualStyleBackColor = true;
             btnClearFiles.Click += btnClearFiles_Click;
@@ -231,7 +249,7 @@ namespace Edureka.Capstone.Forms
             grpConversation.Location = new Point(5, 10);
             grpConversation.Name = "grpConversation";
             grpConversation.Padding = new Padding(8);
-            grpConversation.Size = new Size(716, 618);
+            grpConversation.Size = new Size(725, 618);
             grpConversation.TabIndex = 0;
             grpConversation.TabStop = false;
             grpConversation.Text = "Conversation";
@@ -245,7 +263,7 @@ namespace Edureka.Capstone.Forms
             rtbConversation.Location = new Point(8, 24);
             rtbConversation.Name = "rtbConversation";
             rtbConversation.ReadOnly = true;
-            rtbConversation.Size = new Size(700, 316);
+            rtbConversation.Size = new Size(709, 316);
             rtbConversation.TabIndex = 0;
             rtbConversation.Text = "";
             // 
@@ -254,11 +272,11 @@ namespace Edureka.Capstone.Forms
             pnlInput.Controls.Add(txtPrompt);
             pnlInput.Controls.Add(flpAttachments);
             pnlInput.Controls.Add(lblPromptCaption);
-            pnlInput.Controls.Add(pnlInputButtons);
+            pnlInput.Controls.Add(tlpSend);
             pnlInput.Dock = DockStyle.Bottom;
             pnlInput.Location = new Point(8, 340);
             pnlInput.Name = "pnlInput";
-            pnlInput.Size = new Size(700, 270);
+            pnlInput.Size = new Size(709, 270);
             pnlInput.TabIndex = 1;
             // 
             // txtPrompt
@@ -268,7 +286,7 @@ namespace Edureka.Capstone.Forms
             txtPrompt.Font = new Font("Segoe UI", 10F);
             txtPrompt.Location = new Point(0, 106);
             txtPrompt.Name = "txtPrompt";
-            txtPrompt.Size = new Size(700, 122);
+            txtPrompt.Size = new Size(709, 122);
             txtPrompt.TabIndex = 0;
             txtPrompt.Text = "";
             txtPrompt.TextChanged += txtPrompt_TextChanged;
@@ -276,94 +294,90 @@ namespace Edureka.Capstone.Forms
             // 
             // flpAttachments
             // 
+            flpAttachments.AutoScroll = true;
             flpAttachments.Dock = DockStyle.Top;
             flpAttachments.Location = new Point(0, 22);
             flpAttachments.Name = "flpAttachments";
             flpAttachments.Padding = new Padding(0, 2, 0, 2);
-            flpAttachments.Size = new Size(700, 84);
+            flpAttachments.Size = new Size(709, 84);
             flpAttachments.TabIndex = 3;
             flpAttachments.Visible = false;
             flpAttachments.WrapContents = false;
-            flpAttachments.AutoScroll = true;
             // 
             // lblPromptCaption
             // 
             lblPromptCaption.Dock = DockStyle.Top;
             lblPromptCaption.Location = new Point(0, 0);
             lblPromptCaption.Name = "lblPromptCaption";
-            lblPromptCaption.Size = new Size(700, 22);
+            lblPromptCaption.Size = new Size(709, 22);
             lblPromptCaption.TabIndex = 2;
             lblPromptCaption.Text = "Ask a question about your documents:";
             lblPromptCaption.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // pnlInputButtons
+            // tlpSend  (hint | Clear chat | Send) - fixed-width columns so both buttons are always visible
             // 
-            pnlInputButtons.Controls.Add(lblHint);
-            pnlInputButtons.Controls.Add(flpSendButtons);
-            pnlInputButtons.Dock = DockStyle.Bottom;
-            pnlInputButtons.Location = new Point(0, 228);
-            pnlInputButtons.Name = "pnlInputButtons";
-            pnlInputButtons.Size = new Size(700, 42);
-            pnlInputButtons.TabIndex = 1;
+            tlpSend.ColumnCount = 3;
+            tlpSend.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpSend.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 115F));
+            tlpSend.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 115F));
+            tlpSend.Controls.Add(lblHint, 0, 0);
+            tlpSend.Controls.Add(btnClearChat, 1, 0);
+            tlpSend.Controls.Add(btnSend, 2, 0);
+            tlpSend.Dock = DockStyle.Bottom;
+            tlpSend.Location = new Point(0, 228);
+            tlpSend.Name = "tlpSend";
+            tlpSend.Padding = new Padding(0, 4, 0, 0);
+            tlpSend.RowCount = 1;
+            tlpSend.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlpSend.Size = new Size(709, 42);
+            tlpSend.TabIndex = 1;
             // 
             // lblHint
             // 
             lblHint.Dock = DockStyle.Fill;
             lblHint.ForeColor = Color.Gray;
-            lblHint.Location = new Point(0, 0);
+            lblHint.Location = new Point(3, 4);
             lblHint.Name = "lblHint";
-            lblHint.Size = new Size(460, 42);
+            lblHint.Size = new Size(473, 38);
             lblHint.TabIndex = 0;
             lblHint.Text = "Enter = new line  |  Ctrl+Enter = send  |  Ctrl+V pastes text or images";
             lblHint.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // flpSendButtons
-            // 
-            flpSendButtons.AutoSize = false;
-            flpSendButtons.Controls.Add(btnClearChat);
-            flpSendButtons.Controls.Add(btnSend);
-            flpSendButtons.Dock = DockStyle.Right;
-            flpSendButtons.FlowDirection = FlowDirection.LeftToRight;
-            flpSendButtons.Location = new Point(460, 0);
-            flpSendButtons.Name = "flpSendButtons";
-            flpSendButtons.Padding = new Padding(0, 4, 0, 0);
-            flpSendButtons.Size = new Size(240, 42);
-            flpSendButtons.TabIndex = 1;
-            flpSendButtons.WrapContents = false;
-            // 
-            // btnSend
-            // 
-            btnSend.BackColor = Color.FromArgb(31, 78, 121);
-            btnSend.Enabled = false;
-            btnSend.FlatStyle = FlatStyle.Flat;
-            btnSend.ForeColor = Color.White;
-            btnSend.Location = new Point(137, 7);
-            btnSend.Name = "btnSend";
-            btnSend.Size = new Size(100, 32);
-            btnSend.TabIndex = 0;
-            btnSend.Text = "Send";
-            btnSend.UseVisualStyleBackColor = false;
-            btnSend.Click += btnSend_Click;
-            // 
             // btnClearChat
             // 
-            btnClearChat.Location = new Point(31, 7);
+            btnClearChat.Dock = DockStyle.Fill;
+            btnClearChat.Location = new Point(482, 7);
             btnClearChat.Name = "btnClearChat";
-            btnClearChat.Size = new Size(100, 32);
+            btnClearChat.Size = new Size(109, 32);
             btnClearChat.TabIndex = 1;
             btnClearChat.Text = "Clear chat";
             btnClearChat.UseVisualStyleBackColor = true;
             btnClearChat.Click += btnClearChat_Click;
             // 
+            // btnSend
+            // 
+            btnSend.BackColor = Color.FromArgb(31, 78, 121);
+            btnSend.Dock = DockStyle.Fill;
+            btnSend.Enabled = false;
+            btnSend.FlatStyle = FlatStyle.Flat;
+            btnSend.ForeColor = Color.White;
+            btnSend.Location = new Point(597, 7);
+            btnSend.Name = "btnSend";
+            btnSend.Size = new Size(109, 32);
+            btnSend.TabIndex = 0;
+            btnSend.Text = "Send";
+            btnSend.UseVisualStyleBackColor = false;
+            btnSend.Click += btnSend_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1100, 720);
+            ClientSize = new Size(1200, 720);
             Controls.Add(splitMain);
             Controls.Add(statusStrip);
             Controls.Add(pnlHeader);
-            MinimumSize = new Size(900, 600);
+            MinimumSize = new Size(1000, 600);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Edureka Capstone";
@@ -379,9 +393,7 @@ namespace Edureka.Capstone.Forms
             flpDocButtons.ResumeLayout(false);
             grpConversation.ResumeLayout(false);
             pnlInput.ResumeLayout(false);
-            pnlInputButtons.ResumeLayout(false);
-            pnlInputButtons.PerformLayout();
-            flpSendButtons.ResumeLayout(false);
+            tlpSend.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -399,9 +411,11 @@ namespace Edureka.Capstone.Forms
         private ColumnHeader colName;
         private ColumnHeader colType;
         private ColumnHeader colSize;
+        private ColumnHeader colStatus;
         private Label lblDropHint;
         private FlowLayoutPanel flpDocButtons;
         private Button btnAddFiles;
+        private Button btnPreview;
         private Button btnRemoveFile;
         private Button btnClearFiles;
         private GroupBox grpConversation;
@@ -410,10 +424,9 @@ namespace Edureka.Capstone.Forms
         private Edureka.Capstone.Forms.Controls.PromptRichTextBox txtPrompt;
         private FlowLayoutPanel flpAttachments;
         private Label lblPromptCaption;
-        private Panel pnlInputButtons;
+        private TableLayoutPanel tlpSend;
         private Label lblHint;
-        private FlowLayoutPanel flpSendButtons;
-        private Button btnSend;
         private Button btnClearChat;
+        private Button btnSend;
     }
 }

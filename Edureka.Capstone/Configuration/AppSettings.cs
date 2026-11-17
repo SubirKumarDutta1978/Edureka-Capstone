@@ -5,8 +5,7 @@ namespace Edureka.Capstone.Configuration;
 /// </summary>
 public class AppSettings
 {
-    public const string SectionName = "Capstone";
-
+    public static string SectionName = "Capstone"; //const
     public string ApplicationName { get; set; } = "Edureka Capstone";
     public string UploadFolder { get; set; } = "Data\\Uploads";
     public int MaxFileSizeMb { get; set; } = 50;

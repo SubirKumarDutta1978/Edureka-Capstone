@@ -1,5 +1,8 @@
 using Edureka.Capstone.Configuration;
 using Edureka.Capstone.Forms;
+using Edureka.Capstone.Services.Ingestion;
+using Edureka.Capstone.Services.Readers;
+using Edureka.Capstone.Services.Readers.Derived;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -23,11 +26,17 @@ internal static class Program
                 services.Configure<AppSettings>(
                     context.Configuration.GetSection(AppSettings.SectionName));
 
+                // Step 3: document ingestion
+                services.AddSingleton<IDocumentReader, TextDocumentReader>();
+                //services.AddSingleton<IDocumentReader, CsvDocumentReader>();
+                //services.AddSingleton<IDocumentReader, ExcelDocumentReader>();
+                services.AddSingleton<IDocumentReader, PdfDocumentReader>();
+                services.AddSingleton<IDocumentIngestionService, DocumentIngestionService>();
+
                 // Forms
                 services.AddTransient<MainForm>();
 
-                // Future steps: register services and agents here
-                // services.AddSingleton<IDocumentIngestionService, DocumentIngestionService>();
+                // Future steps: chunking, embeddings, vector store, RAG, agents
             })
             .Build();
 
