@@ -28,8 +28,8 @@ internal static class Program
 
                 // Step 3: document ingestion
                 services.AddSingleton<IDocumentReader, TextDocumentReader>();
-                //services.AddSingleton<IDocumentReader, CsvDocumentReader>();
-                //services.AddSingleton<IDocumentReader, ExcelDocumentReader>();
+                services.AddSingleton<IDocumentReader, CsvDocumentReader>();
+                services.AddSingleton<IDocumentReader, ExcelDocumentReader>();
                 services.AddSingleton<IDocumentReader, PdfDocumentReader>();
                 services.AddSingleton<IDocumentIngestionService, DocumentIngestionService>();
 
